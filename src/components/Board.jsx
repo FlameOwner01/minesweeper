@@ -134,6 +134,24 @@ const Board = ({ width, height, mines}) => {
         });
         return mineArray;
     }
+
+    const getMines = (data) => {
+        let mineArray = [];
+    
+        data.map(datarow => {
+          datarow.map((dataitem) => {
+            if (dataitem.isMine) {
+              mineArray.push(dataitem);
+            }
+            return null;
+          });
+          return null;
+        });
+    
+        return mineArray;
+      }
+
+
     const getHidden = (data) => {
         let mineArray = [];
 
@@ -172,6 +190,7 @@ const Board = ({ width, height, mines}) => {
         let updatedData = board.boardData;
         updatedData.map((datarow) =>{
             datarow.map(dataitem => {
+                if(dataitem.isMine && dataitem.isFlagged) return;
                 dataitem.isRevealed = true;
                 return null;
             })
@@ -186,7 +205,6 @@ const Board = ({ width, height, mines}) => {
         
         if(board.boardData[x][y].isMine){
             revealBoard();
-            alert("game over");
             status = "lost";
         }
 
@@ -201,7 +219,6 @@ const Board = ({ width, height, mines}) => {
         
         if(getHidden(updatedData).length === 10){
             revealBoard();
-            alert("You Win");
             status="won";
         }
 
@@ -221,9 +238,11 @@ const Board = ({ width, height, mines}) => {
         if(updatedData[x][y].isRevealed) return;
         if(updatedData[x][y].isFlagged) {
             updatedData[x][y].isFlagged = false;
-            mines1++;
+           if(mines1 >= 10) return;
+          mines1++;
         }else{
             updatedData[x][y].isFlagged = true;
+            if(mines1 <= 0) return;
             mines1--;
         }
         
@@ -267,9 +286,12 @@ const Board = ({ width, height, mines}) => {
                 Mines: {board.mineCount}
             </span>
             <span>
-                {board.gameStatus === "lost" ? <img alt="" style={{marginLeft:"45%", width:"40px", height:"40px"}} src = {lost} onClick={()=>{newGame()}}/>: null}
-                {board.gameStatus==="won" ? <img alt=""  style={{marginLeft:"45%", width:"40px", height:"40px"}} src={winGame} onClick={()=>{newGame()}}/>:null}
-                {board.gameStatus === "" ?  <img alt=""  style={{marginLeft:"45%", width:"40px", height:"40px"}} src={start} onClick={()=>{newGame()}}/>: null}
+                {board.gameStatus === "lost" ?  <span className="end-screen">You Lost!</span> : null}
+                {board.gameStatus === "lost" ? <img alt="" style={{marginLeft:"40%", width:"60px", height:"60px"}} src = {lost} onClick={()=>{newGame()}}/>: null}
+                {board.gameStatus ==="won" ? <span className="end-screen">You Won!</span> : null} 
+                {board.gameStatus==="won" ?  <img alt=""  style={{marginLeft:"40%", width:"60px", height:"60px"}} src={winGame} onClick={()=>{newGame()}}/> :null}
+                {board.gameStatus === "" ? <span className="end-screen">New Game</span> : null}
+                {board.gameStatus === "" ?  <img alt=""  style={{marginLeft:"40%", width:"60px", height:"60px"}} src={start} onClick={()=>{newGame()}}/>: null}
             </span>
          </div>
          <div className="grid" style={{border:"2px solid blue", width:"244px",height:"243px", marginLeft:"60px"}} >

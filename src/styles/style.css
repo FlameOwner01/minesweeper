@@ -34,14 +34,23 @@ body {
   }
     .info {
       display: block;
-      margin-top: 27px;
-      color: yellow;
+      margin-top: 10px;
+      padding: 2%;
+      color: blue;
+      font-size: 23px;
+      margin-left: 32%;
     }
  
     .grid{
       display: grid;
       grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px;
       grid-template-rows: 30px 30px 30px 30px 30px 30px 30px 30px;
+    }
+    .end-screen{
+      padding: 2%;
+      font-size: 28px;
+      color: blue;
+      margin-left: 30%;
     }
 @media only screen and (max-width:400px)  {
     .grid{
